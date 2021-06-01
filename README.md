@@ -8,4 +8,4 @@ Je cherche à vraiment simplifier la gestion des grilles, du coup je suis parti 
 
 Voilà voilà.
 
-Je viens de commencer, donc c'est absolument pas fini, mais en lançant le main, une belle grille se dessine, du coup c'est cool :D
+J'ai bien avancer, donc concrètement c'est utilisable tel quel, je rajouterai des trucs de temps à autre.
