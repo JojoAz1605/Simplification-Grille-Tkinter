@@ -5,9 +5,8 @@ from objCase import*
 
 class Grille:
     """L'objet Grille, contenant tout un tas d'objet Case, permet de les gérer séparemment"""
-
     def __init__(self, grille: list, fen, taille: int):
-        """
+        """Initialisation de la grille
         :param grille: une grille(list)
         :param fen: la fenêtre maître(Tk())
         :param taille: la taille du canvas(int)
@@ -17,7 +16,8 @@ class Grille:
         self.fen = fen
         self.canvas = Canvas(fen, height=taille, width=taille, bg='white')
         self.taille = taille
-        self.listeCases = []
+        self.listePos = []
+        self.cases = []
 
         self.canvas.pack()
 
@@ -26,24 +26,25 @@ class Grille:
 
     def initialiseCaseGrille(self):
         """Permet d'initaliser toutes les cases du canvas"""
-
         print("Initialisation des cases...")
         tailleCase = int(self.taille/len(self.grille))
         for x in range(0, self.taille, tailleCase):
             for y in range(0, self.taille, tailleCase):
                 case = Case(self.canvas, x, y, 'empty', tailleCase)
                 pos = (int(x / tailleCase), int(y / tailleCase))
-                self.listeCases.append((pos, case))
+                self.listePos.append(pos)
+                self.cases.append(case)
+                case.pos = pos
         print("Cases initialisées!")
-        print(self.listeCases)
+        print(self.listePos)
 
     def updateGrid(self):
         """Met le canvas à jour par rapport à la grille"""
-        for case in self.listeCases:
-            x = case[0][0]
-            y = case[0][1]
-            case[1].state = self.grille[x][y]
-            case[1].affiche()
+        for case in self.cases:
+            x = case.pos[0]
+            y = case.pos[1]
+            case.state = self.grille[x][y]
+            case.affiche()
 
     def changeState(self, pos: tuple, state: str):
         """Change l'état d'une case donnée
@@ -53,3 +54,21 @@ class Grille:
         """
         self.grille[pos[0]][pos[1]] = state
         self.updateGrid()
+
+    def adjacentes(self, pos: tuple):
+        """Retourne les cases adjacentes à une case spécifique
+        :param pos: la position d'une case
+        :return: liste des cases adjacentes
+        """
+        case = self.pos2Case(pos)
+        return case.donneAdjacentes(self)
+
+    def pos2Case(self, pos: tuple):
+        """Fait le lien entre la position et l'objet case associé
+        :param pos: position d'une case
+        :return: une case
+        """
+        for i in range(len(self.listePos)):
+            if pos == self.listePos[i]:
+                return self.cases[i]
+        return False
