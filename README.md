@@ -1,5 +1,5 @@
 # Simplification Grille Tkinter
- Programme en python visatnt à simplifier la vie avec les grilles en Tkinter
+ Programme en python visant à simplifier la vie avec les grilles en Tkinter
  
  En gros je trouve ça chiant de devoir réécrire certaisn bouts de code pour gérer les grilles sur un canvas tkinter, et je me suis dis que ce serait bien d'avoir un programme que je pourrais prendre comme base à chaque fois.
 Eh bien c'est le but de ce programme.
