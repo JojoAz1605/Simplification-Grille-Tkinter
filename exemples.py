@@ -1,4 +1,4 @@
-# main.py
+# exemples.py
 
 from objGrille import*
 from commonFunc import*
