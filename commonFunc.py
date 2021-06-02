@@ -1,6 +1,6 @@
 # commonFunc.py
 
-from math import*
+from math import sqrt
 
 
 def creeGrille(taille: int, state: str):
@@ -9,23 +9,10 @@ def creeGrille(taille: int, state: str):
     :param state: l'état des cases(voir STATES)
     :return: la grille
     """
-    grille = [state]*taille
+    grille = [state] * taille
     for i in range(taille):
-        grille[i] = [state]*taille
+        grille[i] = [state] * taille
     return grille
-
-
-def verifTailles(tailleCase: int, tailleCanvas: int):
-    """Vérifie les tailles choisies
-    :param tailleCase: la taille d'une case
-    :param tailleCanvas: la taille du canvas
-    """
-    if tailleCanvas % tailleCase != 0:
-        print("La taille des cases n'est pas un diviseur de la taille du canvas...\nVous auriez pu prendre:")
-        for i in range(1, tailleCanvas):
-            if tailleCanvas % i == 0:
-                print(i, end=", ")
-        exit()
 
 
 def distance(case1, case2):
@@ -39,4 +26,4 @@ def distance(case1, case2):
     x2 = case2.pos[0]
     y2 = case2.pos[1]
 
-    return sqrt((x2-x1)**2+(y2-y1)**2)
+    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)

@@ -1,7 +1,7 @@
 # objCase.py
 
 from tkinter import *
-from commonFunc import*
+from commonFunc import *
 
 STATES = {
     'empty': 'white',
@@ -30,15 +30,19 @@ class Case:
     def affiche(self):
         """Affiche la case"""
         global STATES
-        self.grille.create_rectangle(self.posX, self.posY, self.posX + self.taille, self.posY + self.taille, fill=STATES[self.state])
+        self.grille.create_rectangle(self.posX, self.posY, self.posX + self.taille, self.posY + self.taille,
+                                     fill=STATES[self.state])
 
-    def donneAdjacentes(self, grille):
+    def donneAdjacentes(self, grille, diago: bool):
         """Renvoie une liste des cases adjacentes
         :param grille: la grille sur laquelle évolue la case
+        :param diago: Détermine si oui ou non les cases en diagonales sont prises en compte
         :return: une liste des cases se situant autour de la case
         """
         listeAdja = []
         for case in grille.cases:
-            if distance(self, case) == 1:
+            if distance(self, case) <= 1.5 and distance(self, case) != 0 and diago:
+                listeAdja.append(case)
+            elif distance(self, case) <= 1 and distance(self, case) != 0:
                 listeAdja.append(case)
         return listeAdja
