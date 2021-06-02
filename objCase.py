@@ -9,6 +9,13 @@ STATES = {
 }
 
 
+def makeListOfState():
+    listeStates = []
+    for key in STATES:
+        listeStates.append(key)
+    return listeStates
+
+
 class Case:
     def __init__(self, canvas: Canvas, posX0: int, posY0: int, state: str, taille: int):
         """
@@ -23,6 +30,7 @@ class Case:
         self.posY = posY0
         self.state = state
         self.taille = taille
+        self.listOfStates = makeListOfState()
         self.pos = (-1, -1)
 
         self.affiche()
@@ -30,8 +38,7 @@ class Case:
     def affiche(self):
         """Affiche la case"""
         global STATES
-        self.grille.create_rectangle(self.posX, self.posY, self.posX + self.taille, self.posY + self.taille,
-                                     fill=STATES[self.state])
+        self.grille.create_rectangle(self.posX, self.posY, self.posX + self.taille, self.posY + self.taille, fill=STATES[self.state])
 
     def donneAdjacentes(self, grille, diago: bool):
         """Renvoie une liste des cases adjacentes
@@ -41,8 +48,17 @@ class Case:
         """
         listeAdja = []
         for case in grille.cases:
-            if distance(self, case) <= 1.5 and distance(self, case) != 0 and diago:
+            if distanceCases(self, case) <= 1.5 and distanceCases(self, case) != 0 and diago:
                 listeAdja.append(case)
-            elif distance(self, case) <= 1 and distance(self, case) != 0:
+            elif distanceCases(self, case) <= 1 and distanceCases(self, case) != 0:
                 listeAdja.append(case)
         return listeAdja
+
+    def cycleState(self):
+        """Change l'état dans un sens prédéfini"""
+        oldStateIndex = indexOf(self.listOfStates, self.state)
+        if oldStateIndex < len(self.listOfStates):
+            self.state = STATES[self.listOfStates[oldStateIndex+1]]
+        elif oldStateIndex == len(self.listOfStates):
+            self.state = STATES[self.listOfStates[0]]
+

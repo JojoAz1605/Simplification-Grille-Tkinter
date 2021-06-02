@@ -1,10 +1,12 @@
 # objGrille.py
 
-from objCase import*
+from objCase import *
+from tkinter import ttk
 
 
 class Grille:
     """L'objet Grille, contenant tout un tas d'objet Case, permet de les gérer séparemment"""
+
     def __init__(self, grille: list, fen, taille: int):
         """Initialisation de la grille
         :param grille: une grille(list)
@@ -18,6 +20,7 @@ class Grille:
         self.taille = taille
         self.listePos = []
         self.cases = []
+        self.tailleCase = int(self.taille / len(self.grille))
 
         self.canvas.pack()
 
@@ -27,10 +30,9 @@ class Grille:
     def initialiseCaseGrille(self):
         """Permet d'initaliser toutes les cases du canvas"""
         print("Initialisation des cases...")
-        tailleCase = int(self.taille/len(self.grille))
         for x in range(len(self.grille)):
             for y in range(len(self.grille)):
-                case = Case(self.canvas, x*tailleCase, y*tailleCase, 'empty', tailleCase)
+                case = Case(self.canvas, x * self.tailleCase, y * self.tailleCase, 'empty', self.tailleCase)
                 pos = (x, y)
                 self.listePos.append(pos)
                 self.cases.append(case)
@@ -73,3 +75,29 @@ class Grille:
             if pos == self.listePos[i]:
                 return self.cases[i]
         return False
+
+    def returnCoord(self, event):
+        x = int(event.x)
+        y = int(event.y)
+        return x, y
+
+    def getClickedCase(self, event):
+        coord = self.returnCoord(event)
+        x = coord[0]
+        y = coord[1]
+        for case in self.cases:
+            xCase = (case.pos[0] * self.tailleCase) + self.tailleCase / 2
+            yCase = (case.pos[1] * self.tailleCase) + self.tailleCase / 2
+            if distance((xCase, yCase), (x, y)) <= self.tailleCase / 2:
+                print(case.pos)
+                return case
+
+    def cycleState(self, event):
+        case = self.getClickedCase(event)
+        case.cycleState()
+        print(case.state)
+        case.affiche()
+
+    def clicDroit(self):
+        """Fonctions à exécuter en cas de clic droit"""
+        self.canvas.bind("<Button-1>", self.cycleState)
