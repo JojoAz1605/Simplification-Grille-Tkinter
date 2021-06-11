@@ -93,13 +93,39 @@ class Grille:
                 return case
 
     def cycleState(self, event):
-        """Change l'état dans un sens prédéfini
-        :param event: oui
-        """
         case = self.getClickedCase(event)
         case.cycleState()
         case.affiche()
 
     def clicDroit(self):
         """Fonctions à exécuter en cas de clic droit"""
-        self.canvas.bind("<Button-1>", self.cycleState)
+        self.canvas.bind("<Button-1>", self.tour)
+
+    def combienState(self, listeCase: list, state: str):
+        """Renvoie le nombre de cases possédant un certain état dans une liste de cases
+        :param listeCase: une liste de cases
+        :param state: un état à rechercher(voir STATES)
+        :return: le nombre de cases étant dans un certain état
+        """
+        nbCases = 0
+        for case in listeCase:
+            if case.state == state:
+                nbCases += 1
+        return nbCases
+
+    def tour(self, *args):
+        print("Un tour est lancé!")
+        listeChangements = []
+        for case in self.cases:
+            casesAdja = case.donneAdjacentes(self, True)
+            nbAdjaPleines = self.combienState(casesAdja, 'full')
+            if case.state == 'empty' and nbAdjaPleines == 3:
+                print("Une nouvelle cellule vient de naître!")
+                listeChangements.append((case, 'full'))
+            elif case.state == 'full' and (nbAdjaPleines < 2 or nbAdjaPleines > 3):
+                print("Une cellule vient de mourir :(")
+                listeChangements.append((case, 'empty'))
+        for changement in listeChangements:
+            case = changement[0]
+            state = changement[1]
+            self.changeState(case.pos, state)
