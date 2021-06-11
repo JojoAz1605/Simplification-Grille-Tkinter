@@ -48,11 +48,29 @@ def vecDiff(vec1: tuple, vec2: tuple):
 
 def vecAdd(vec1: tuple, vec2: tuple):
     """Fait la somme de deux vecteurs
-        :param vec1: Un premier vecteur
-        :param vec2: Un deuxième vecteur
-        :return: la différence entre les deux
-        """
+    :param vec1: Un premier vecteur
+    :param vec2: Un deuxième vecteur
+    :return: la différence entre les deux
+    """
     return vec1[0] + vec2[0], vec1[1] + vec2[1]
+
+
+def vecMult(vec1, vec2):
+    """Fait la multiplication de deux vecteurs
+    :param vec1: Un premier vecteur
+    :param vec2: Un deuxième vecteur
+    :return: le multiple des deux
+    """
+    return vec1[0] * vec2[0], vec1[1] * vec2[1]
+
+
+def vecDiv(vec1, vec2):
+    """Fait la division de deux vecteurs
+    :param vec1: Un premier vecteur
+    :param vec2: Un deuxième vecteur
+    :return: la division des deux
+    """
+    return vec1[0] / vec2[0], vec1[1] / vec2[1]
 
 
 def entre(x: int, val1: int, val2: int):
@@ -62,7 +80,7 @@ def entre(x: int, val1: int, val2: int):
     :param val2: plus grand nombre
     :return: Si oui ou non x est compris dans l'intervalle
     """
-    if val2 > val1:
+    if val2 < val1:
         return False
     else:
         return val1 <= x <= val2

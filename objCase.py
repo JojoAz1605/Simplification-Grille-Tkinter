@@ -29,6 +29,7 @@ class Case:
         self.grille = canvas
         self.posX = posX0
         self.posY = posY0
+        self.pos0 = (self.posX, self.posY)
         self.state = state
         self.taille = taille
         self.listOfStates = makeListOfState()

@@ -4,6 +4,12 @@ from objCase import *
 from tkinter import ttk
 
 
+def returnCoord(event):
+    x = int(event.x)
+    y = int(event.y)
+    return x, y
+
+
 class Grille:
     """L'objet Grille, contenant tout un tas d'objet Case, permet de les gérer séparemment"""
 
@@ -76,24 +82,18 @@ class Grille:
                 return self.cases[i]
         return False
 
-    def returnCoord(self, event):
-        x = int(event.x)
-        y = int(event.y)
-        return x, y
-
-    def getClickedCaseDist(self, event):
-        coord = self.returnCoord(event)
-        x = coord[0]
-        y = coord[1]
+    def getClickedCase(self, event):
+        """
+        :param event: oui
+        :return: la case cliquée
+        """
+        coord = returnCoord(event)
         for case in self.cases:
-            xCase = (case.pos[0] * self.tailleCase) + self.tailleCase / 2
-            yCase = (case.pos[1] * self.tailleCase) + self.tailleCase / 2
-            if distance((xCase, yCase), (x, y)) <= self.tailleCase / 2:
-                print(case.pos)
+            if entreCoord(coord, case.pos0, vecAdd(case.pos0, (self.tailleCase, self.tailleCase))):
                 return case
 
     def cycleState(self, event):
-        case = self.getClickedCaseDist(event)
+        case = self.getClickedCase(event)
         case.cycleState()
         case.affiche()
 
