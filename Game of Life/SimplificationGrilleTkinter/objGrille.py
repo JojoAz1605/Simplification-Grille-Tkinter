@@ -2,6 +2,7 @@
 
 from objCase import *
 from tkinter import ttk
+from time import sleep
 
 
 def returnCoord(event):
@@ -80,7 +81,6 @@ class Grille:
         for i in range(len(self.listePos)):
             if pos == self.listePos[i]:
                 return self.cases[i]
-        return False
 
     def getClickedCase(self, event):
         """
@@ -99,7 +99,7 @@ class Grille:
 
     def clicDroit(self):
         """Fonctions à exécuter en cas de clic droit"""
-        self.canvas.bind("<Button-1>", self.tour)
+        self.canvas.bind("<Button-1>", self.jeuDeLaVie)
 
     def combienState(self, listeCase: list, state: str):
         """Renvoie le nombre de cases possédant un certain état dans une liste de cases
@@ -117,15 +117,31 @@ class Grille:
         print("Un tour est lancé!")
         listeChangements = []
         for case in self.cases:
-            casesAdja = case.donneAdjacentes(self, True)
-            nbAdjaPleines = self.combienState(casesAdja, 'full')
-            if case.state == 'empty' and nbAdjaPleines == 3:
-                print("Une nouvelle cellule vient de naître!")
-                listeChangements.append((case, 'full'))
-            elif case.state == 'full' and (nbAdjaPleines < 2 or nbAdjaPleines > 3):
-                print("Une cellule vient de mourir :(")
-                listeChangements.append((case, 'empty'))
+            casesAdja = self.donneAdjacentes(case, True)
+            try:
+                nbAdjaPleines = self.combienState(casesAdja, 'full')
+                if case.state == 'empty' and nbAdjaPleines == 3:
+                    listeChangements.append((case, 'full'))
+                elif case.state == 'full' and (nbAdjaPleines < 2 or nbAdjaPleines > 3):
+                    listeChangements.append((case, 'empty'))
+            except AttributeError:
+                pass
         for changement in listeChangements:
             case = changement[0]
             state = changement[1]
             self.changeState(case.pos, state)
+
+    def donneAdjacentes(self, case, diago):
+        listeAdja = [self.pos2Case(vecAdd(case.pos, (1, 0))), self.pos2Case(vecAdd(case.pos, (-1, 0))),
+                     self.pos2Case(vecAdd(case.pos, (0, 1))), self.pos2Case(vecAdd(case.pos, (0, -1)))]
+        if diago:
+            listeAdja.append(self.pos2Case(vecAdd(case.pos, (1, 1))))
+            listeAdja.append(self.pos2Case(vecAdd(case.pos, (-1, -1))))
+            listeAdja.append(self.pos2Case(vecAdd(case.pos, (1, -1))))
+            listeAdja.append(self.pos2Case(vecAdd(case.pos, (-1, 1))))
+        return listeAdja
+
+    def jeuDeLaVie(self, *args):
+        self.tour()
+        self.canvas.after(250, self.jeuDeLaVie)
+
