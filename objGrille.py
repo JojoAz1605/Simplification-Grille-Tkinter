@@ -81,7 +81,7 @@ class Grille:
         y = int(event.y)
         return x, y
 
-    def getClickedCase(self, event):
+    def getClickedCaseDist(self, event):
         coord = self.returnCoord(event)
         x = coord[0]
         y = coord[1]
@@ -93,9 +93,8 @@ class Grille:
                 return case
 
     def cycleState(self, event):
-        case = self.getClickedCase(event)
+        case = self.getClickedCaseDist(event)
         case.cycleState()
-        print(case.state)
         case.affiche()
 
     def clicDroit(self):

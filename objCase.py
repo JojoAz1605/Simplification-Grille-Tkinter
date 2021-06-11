@@ -5,7 +5,8 @@ from commonFunc import *
 
 STATES = {
     'empty': 'white',
-    'full': 'black'
+    'full': 'black',
+    'dangerous': 'red'
 }
 
 
@@ -57,8 +58,8 @@ class Case:
     def cycleState(self):
         """Change l'état dans un sens prédéfini"""
         oldStateIndex = indexOf(self.listOfStates, self.state)
-        if oldStateIndex < len(self.listOfStates):
-            self.state = STATES[self.listOfStates[oldStateIndex+1]]
-        elif oldStateIndex == len(self.listOfStates):
-            self.state = STATES[self.listOfStates[0]]
+        if oldStateIndex + 1 < len(self.listOfStates):
+            self.state = self.listOfStates[oldStateIndex + 1]
+        else:
+            self.state = self.listOfStates[0]
 
