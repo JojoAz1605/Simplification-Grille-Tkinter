@@ -112,3 +112,32 @@ def indexOf(liste: list, val):
         if liste[i] == val:
             return i
     return False
+
+
+def returnCoord(event):
+    x = int(event.x)
+    y = int(event.y)
+    return x, y
+
+
+def combienState(listeCase: list, state: str):
+    """Renvoie le nombre de cases possédant un certain état dans une liste de cases
+    :param listeCase: une liste de cases
+    :param state: un état à rechercher(voir STATES)
+    :return: le nombre de cases étant dans un certain état
+    """
+    nbCases = 0
+    for case in listeCase:
+        if case.state == state:
+            nbCases += 1
+    return nbCases
+
+
+def changeState(case, state: str):
+    """Change l'état d'une case donnée
+
+    :param case: la case à changer
+    :param state: le nouvel etat
+    """
+    case.state = state
+    case.affiche()

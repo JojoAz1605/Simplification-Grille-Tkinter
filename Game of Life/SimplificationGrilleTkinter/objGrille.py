@@ -1,14 +1,7 @@
 # objGrille.py
 
 from objCase import *
-from tkinter import ttk
-from time import sleep
-
-
-def returnCoord(event):
-    x = int(event.x)
-    y = int(event.y)
-    return x, y
+from commonFunc import*
 
 
 class Grille:
@@ -47,23 +40,6 @@ class Grille:
         print("Cases initialisées!")
         print(self.listePos)
 
-    def updateGrid(self):
-        """Met le canvas à jour par rapport à la grille"""
-        for case in self.cases:
-            x = case.pos[0]
-            y = case.pos[1]
-            case.state = self.grille[x][y]
-            case.affiche()
-
-    def changeState(self, pos: tuple, state: str):
-        """Change l'état d'une case donnée
-
-        :param pos: la position de la case à changer
-        :param state: le nouvel etat
-        """
-        self.grille[pos[0]][pos[1]] = state
-        self.updateGrid()
-
     def adjacentes(self, pos: tuple, diago: bool):
         """Retourne les cases adjacentes à une case spécifique
         :param pos: la position d'une case
@@ -101,47 +77,40 @@ class Grille:
         """Fonctions à exécuter en cas de clic droit"""
         self.canvas.bind("<Button-1>", self.jeuDeLaVie)
 
-    def combienState(self, listeCase: list, state: str):
-        """Renvoie le nombre de cases possédant un certain état dans une liste de cases
-        :param listeCase: une liste de cases
-        :param state: un état à rechercher(voir STATES)
-        :return: le nombre de cases étant dans un certain état
-        """
-        nbCases = 0
-        for case in listeCase:
-            if case.state == state:
-                nbCases += 1
-        return nbCases
-
     def tour(self, *args):
         print("Un tour est lancé!")
         listeChangements = []
         for case in self.cases:
             casesAdja = self.donneAdjacentes(case, True)
-            try:
-                nbAdjaPleines = self.combienState(casesAdja, 'full')
-                if case.state == 'empty' and nbAdjaPleines == 3:
-                    listeChangements.append((case, 'full'))
-                elif case.state == 'full' and (nbAdjaPleines < 2 or nbAdjaPleines > 3):
-                    listeChangements.append((case, 'empty'))
-            except AttributeError:
-                pass
+            nbAdjaPleines = combienState(casesAdja, 'full')
+            if case.state == 'empty' and nbAdjaPleines == 3:
+                listeChangements.append((case, 'full'))
+            elif case.state == 'full' and (nbAdjaPleines < 2 or nbAdjaPleines > 3):
+                listeChangements.append((case, 'empty'))
         for changement in listeChangements:
             case = changement[0]
             state = changement[1]
-            self.changeState(case.pos, state)
+            changeState(case, state)
 
     def donneAdjacentes(self, case, diago):
-        listeAdja = [self.pos2Case(vecAdd(case.pos, (1, 0))), self.pos2Case(vecAdd(case.pos, (-1, 0))),
-                     self.pos2Case(vecAdd(case.pos, (0, 1))), self.pos2Case(vecAdd(case.pos, (0, -1)))]
+        listeAdja = []
+
+        def ajouteCase(x, y):
+            aAjouter = self.pos2Case(vecAdd(case.pos, (x, y)))
+            if aAjouter is not None:
+                listeAdja.append(aAjouter)
+
+        ajouteCase(1, 0)
+        ajouteCase(-1, 0)
+        ajouteCase(0, 1)
+        ajouteCase(0, -1)
         if diago:
-            listeAdja.append(self.pos2Case(vecAdd(case.pos, (1, 1))))
-            listeAdja.append(self.pos2Case(vecAdd(case.pos, (-1, -1))))
-            listeAdja.append(self.pos2Case(vecAdd(case.pos, (1, -1))))
-            listeAdja.append(self.pos2Case(vecAdd(case.pos, (-1, 1))))
+            ajouteCase(1, 1)
+            ajouteCase(-1, -1)
+            ajouteCase(1, -1)
+            ajouteCase(-1, 1)
         return listeAdja
 
     def jeuDeLaVie(self, *args):
         self.tour()
-        self.canvas.after(250, self.jeuDeLaVie)
-
+        self.canvas.after(10, self.jeuDeLaVie)
