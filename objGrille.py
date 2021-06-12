@@ -1,13 +1,6 @@
 # objGrille.py
 
 from objCase import *
-from tkinter import ttk
-
-
-def returnCoord(event):
-    x = int(event.x)
-    y = int(event.y)
-    return x, y
 
 
 class Grille:
@@ -54,15 +47,6 @@ class Grille:
             case.state = self.grille[x][y]
             case.affiche()
 
-    def changeState(self, pos: tuple, state: str):
-        """Change l'état d'une case donnée
-
-        :param pos: la position de la case à changer
-        :param state: le nouvel etat
-        """
-        self.grille[pos[0]][pos[1]] = state
-        self.updateGrid()
-
     def adjacentes(self, pos: tuple, diago: bool):
         """Retourne les cases adjacentes à une case spécifique
         :param pos: la position d'une case
@@ -70,7 +54,7 @@ class Grille:
         :return: liste des cases adjacentes
         """
         case = self.pos2Case(pos)
-        return case.donneAdjacentes(self, diago)
+        return self.donneAdjacentes(case, diago)
 
     def pos2Case(self, pos: tuple):
         """Fait le lien entre la position et l'objet case associé
@@ -103,3 +87,22 @@ class Grille:
     def clicDroit(self):
         """Fonctions à exécuter en cas de clic droit"""
         self.canvas.bind("<Button-1>", self.cycleState)
+
+    def donneAdjacentes(self, case, diago):
+        listeAdja = []
+
+        def ajouteCase(x, y):
+            aAjouter = self.pos2Case(vecAdd(case.pos, (x, y)))
+            if aAjouter is not None:
+                listeAdja.append(aAjouter)
+
+        ajouteCase(1, 0)
+        ajouteCase(-1, 0)
+        ajouteCase(0, 1)
+        ajouteCase(0, -1)
+        if diago:
+            ajouteCase(1, 1)
+            ajouteCase(-1, -1)
+            ajouteCase(1, -1)
+            ajouteCase(-1, 1)
+        return listeAdja

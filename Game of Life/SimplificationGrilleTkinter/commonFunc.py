@@ -135,7 +135,6 @@ def combienState(listeCase: list, state: str):
 
 def changeState(case, state: str):
     """Change l'état d'une case donnée
-
     :param case: la case à changer
     :param state: le nouvel etat
     """

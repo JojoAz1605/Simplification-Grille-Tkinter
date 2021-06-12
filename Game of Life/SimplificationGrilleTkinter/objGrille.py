@@ -38,7 +38,6 @@ class Grille:
                 self.cases.append(case)
                 case.pos = pos
         print("Cases initialisées!")
-        print(self.listePos)
 
     def adjacentes(self, pos: tuple, diago: bool):
         """Retourne les cases adjacentes à une case spécifique
@@ -113,4 +112,4 @@ class Grille:
 
     def jeuDeLaVie(self, *args):
         self.tour()
-        self.canvas.after(10, self.jeuDeLaVie)
+        self.canvas.after(100, self.jeuDeLaVie)
