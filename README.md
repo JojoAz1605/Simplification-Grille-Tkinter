@@ -10,5 +10,4 @@ Voilà voilà.
 
 J'ai bien avancer, donc concrètement c'est utilisable tel quel, je rajouterai des trucs de temps à autre.
 
-Ah, ça avance plus :)
-Je devrais m'y remettre, mais un truc qui s'appelle flemme s'est mis en travers de mon chemin désolé :)
+J'ai aussi essayé de faire le jeu de la vie de Conway, et là je m'attaque à la fourmi de Langton!
