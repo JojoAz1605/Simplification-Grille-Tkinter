@@ -42,4 +42,5 @@ class Case:
             self.state = self.listOfStates[oldStateIndex + 1]
         else:
             self.state = self.listOfStates[0]
+        self.affiche()
 
