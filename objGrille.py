@@ -20,7 +20,8 @@ class Grille:
         self.listePos = []
         self.cases = []
         self.tailleCase = int(self.taille / self.nbCases)
-
+        self.fourmi = Case(self.canvas, self.tailleCase * 5, self.tailleCase * 5, 'player', self.tailleCase, 'haut', isFourmi=True)
+        print('ga', self.fourmi.pos)
         self.canvas.pack()
 
         self.initialiseCaseGrille()
@@ -31,7 +32,7 @@ class Grille:
         print("Initialisation des cases...")
         for x in range(self.nbCases):
             for y in range(self.nbCases):
-                case = Case(self.canvas, x * self.tailleCase, y * self.tailleCase, 'empty', self.tailleCase)
+                case = Case(self.canvas, x * self.tailleCase, y * self.tailleCase, 'empty', self.tailleCase, 'none')
                 pos = (x, y)
                 self.cases.append(case)
                 self.listePos.append(pos)
@@ -68,7 +69,7 @@ class Grille:
 
     def clicDroit(self):
         """Fonctions à exécuter en cas de clic droit"""
-        self.canvas.bind("<Button-1>", self.cycleState)
+        self.canvas.bind("<Button-1>", self.fourmiDeLangton)
 
     def donneAdjacentes(self, case, diago):
         listeAdja = []
@@ -89,3 +90,33 @@ class Grille:
             ajouteCase(1, -1)
             ajouteCase(-1, 1)
         return listeAdja
+
+    def tour(self):
+        print("Un tour est lancé!")
+        self.fourmi.avance()
+        caseEnDessous = self.pos2Case(vecDiv(self.fourmi.pos, (self.tailleCase, self.tailleCase)))
+        print(caseEnDessous.pos, vecDiv(self.fourmi.pos, (self.tailleCase, self.tailleCase)))
+        if caseEnDessous.state == 'full':
+            if self.fourmi.rotation == 'haut':
+                self.fourmi.rotation = 'gauche'
+            elif self.fourmi.rotation == 'bas':
+                self.fourmi.rotation = 'droite'
+            elif self.fourmi.rotation == 'droite':
+                self.fourmi.rotation = 'haut'
+            else:
+                self.fourmi.rotation = 'bas'
+            caseEnDessous.state = 'empty'
+        else:
+            if self.fourmi.rotation == 'haut':
+                self.fourmi.rotation = 'droite'
+            elif self.fourmi.rotation == 'bas':
+                self.fourmi.rotation = 'gauche'
+            elif self.fourmi.rotation == 'droite':
+                self.fourmi.rotation = 'bas'
+            else:
+                self.fourmi.rotation = 'haut'
+            caseEnDessous.state = 'full'
+
+    def fourmiDeLangton(self, *args):
+        self.tour()
+        self.canvas.after(500, self.fourmiDeLangton)
