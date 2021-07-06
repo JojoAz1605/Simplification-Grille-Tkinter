@@ -9,20 +9,27 @@ def distanceCases(case1, case2):
     :param case2: une Case
     :return: la distance entre les deux cases
     """
+    # défini les variables pour plus de lisibilité
     x1 = case1.pos[0]
     y1 = case1.pos[1]
     x2 = case2.pos[0]
     y2 = case2.pos[1]
-    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)  # petite formule :)
 
 
-def distance(pos1, pos2):
+def distance(pos1: tuple, pos2: tuple):
+    """Retourne la distance entre deux positions
+    :param pos1: une première position
+    :param pos2: une deuxième position
+    :return: la distance entre les deux
+    """
+    # défini les variables pour plus de lisibilité
     x1 = pos1[0]
     y1 = pos1[1]
     x2 = pos2[0]
     y2 = pos2[1]
 
-    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)  # petite formule :)
 
 
 def vecDiff(vec1: tuple, vec2: tuple):
@@ -68,10 +75,10 @@ def entre(x: int, val1: int, val2: int):
     :param val2: plus grand nombre
     :return: Si oui ou non x est compris dans l'intervalle
     """
-    if val2 < val1:
-        return False
+    if val2 < val1:  # voit si val2 est inférieur à val1
+        return False  # val2 est supérieur à val1, donc ça marche pas
     else:
-        return val1 <= x <= val2
+        return val1 <= x <= val2  # incroyable cette syntaxe hein :o
 
 
 def entreCoord(coord: tuple, val1Coord: tuple, val2Coord: tuple):
@@ -81,6 +88,7 @@ def entreCoord(coord: tuple, val1Coord: tuple, val2Coord: tuple):
     :param val2Coord: les coordonnées d'un deuxième point
     :return: Si oui ou non un point se trouve entre les deux coordonnées
     """
+    # défini les variables pour plus de lisibilité
     x = coord[0]
     y = coord[1]
     xVal1 = val1Coord[0]
@@ -96,16 +104,20 @@ def indexOf(liste: list, val):
     :param val: une valeur à rechercher dans la liste
     :return: l'index de la valeur
     """
-    for i in range(len(liste)):
-        if liste[i] == val:
-            return i
-    return False
+    for i in range(len(liste)):  # parcours la liste
+        if liste[i] == val:  # si l'élément est trouvé
+            return i  # le retourne
+    return False  # sinon retourne faux
 
 
 def returnCoord(event):
-    x = int(event.x)
-    y = int(event.y)
-    return x, y
+    """Donne les coordonées d'un clic
+    :param event: le clic
+    :return: les cordonnées du clic
+    """
+    x = int(event.x)  # bon
+    y = int(event.y)  # y a vraiment beoin d'expliquer?
+    return x, y  # les retourne en tuple
 
 
 def combienState(listeCase: list, state: str):
@@ -114,11 +126,11 @@ def combienState(listeCase: list, state: str):
     :param state: un état à rechercher(voir STATES)
     :return: le nombre de cases étant dans un certain état
     """
-    nbCases = 0
-    for case in listeCase:
-        if case.state == state:
-            nbCases += 1
-    return nbCases
+    nbCases = 0  # le nombre de cases, initialisé à 0
+    for case in listeCase:  # parcours la liste de case
+        if case.state == state:  # si l'état est celui recherché
+            nbCases += 1  # incrémente de 1 le nombre de cases
+    return nbCases  # retourne le nombre de cases dans l'état recherché
 
 
 def changeState(case, state: str):
@@ -126,12 +138,15 @@ def changeState(case, state: str):
     :param case: la case à changer
     :param state: le nouvel etat
     """
-    case.state = state
-    case.affiche()
+    case.state = state  # change l'état
+    case.affiche()  # affiche la case
 
 
 def makeListOfState(dicoStates: dict):
-    listeStates = []
-    for key in dicoStates:
-        listeStates.append(key)
-    return listeStates
+    """fait une liste des états disponibles
+    :return: la liste des états
+    """
+    listeStates = []  # liste des états
+    for key in dicoStates:  # parcours les clés
+        listeStates.append(key)  # ajoute la clé à la liste
+    return listeStates  # retourne la clé
